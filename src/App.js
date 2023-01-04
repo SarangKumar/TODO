@@ -1,10 +1,12 @@
 import './App.css';
 import { BiAlignLeft } from 'react-icons/bi'
 import { useRef, useState } from 'react';
+import Item from './Item';
 
 function App() {
   const [items, setItems] = useState([])
   const inputRef = useRef();
+  
 
   function handleSubmit(e){
     e.preventDefault();
@@ -28,7 +30,7 @@ function App() {
       <div className="App">
         <div className='App-box'>
           <form className="Todo-header" onSubmit={handleSubmit}>
-            <BiAlignLeft size={30} color='#444' />
+            <BiAlignLeft size={24} color='#444' />
             <input type='search' id='search' placeholder='Add a new task' ref={inputRef}/>
           </form>
           <div className='options'>
@@ -44,8 +46,9 @@ function App() {
             </div>
           </div>
           <div className='Todo-body'>
+            
             {items.map((item, index) => {
-              return <div key={index}>{item}</div>
+              return <Item key={index} value={item} />
             })}
             {items.length===0
             ? <div className='no-task'>No item</div>
