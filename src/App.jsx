@@ -1,5 +1,6 @@
 import './index.css'
 import { useState, useEffect } from 'react'
+
 function App() {
 
 	const d = new Date();
@@ -89,45 +90,59 @@ function App() {
 
 
 		localStorage.setItem('task', JSON.stringify(updatesTask))
-		console.log(taskId)
+		// console.log(taskId)
+	}
+
+
+	const clearAll = () => {
+		const emptyArray = [];
+		localStorage.setItem('task', JSON.stringify([]))
+		setTask(emptyArray);
 	}
 
 	return (
 		<>
 			<main className='w-full md:w-3/4 bg-white text-slate-500 rounded-md px-2 py-6 shadow-md mx-auto flex justify-between flex-col h-[100dvh]'>
-			<div>
+				<div>
+					<div className='flex justify-between px-6 border-b-[0.5px]'>
+						<div className="grid grid-rows-2 grid-flow-col gap-1 font-semibold">
+							<div className='row-span-2 text-red-500 text-5xl flex items-center'>
+								{d.getDate()}
+							</div>
+							<div className='mx-1 mt-2'>
+								{month}
+							</div>
+							<div className='mx-1 -my-2'>
+								{d.getFullYear()}
+							</div>
+						</div>
+						<div className='flex justify-center items-center uppercase font-semibold'>
+							{day}
+						</div>
+					</div>
 
-				<div className='flex justify-between px-6 border-b-[0.5px]'>
-					<div className="grid grid-rows-2 grid-flow-col gap-1 font-semibold">
-						<div className='row-span-2 text-red-500 text-5xl flex items-center'>
-							{d.getDate()}
-						</div>
-						<div className='mx-1 mt-2'>
-							{month}
-						</div>
-						<div className='mx-1 -my-2'>
-							{d.getFullYear()}
-						</div>
+					<div className='flex items-center justify-between mx-8'>
+						<h1 className='md:text-left mx-2 md:my-5 my-8 text-center text-2xl font-bold text-slate-500'>
+							Welcome to TODO List Manager
+						</h1>
+						<button onClick={clearAll} className='hidden md:block h-fit my-auto px-3 py-[2px] rounded-md border-2  border-red-300 hover:border-0 hover:text-red-100 hover:bg-red-500 transition-colors'>Clear</button>
+						<svg onClick={clearAll} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="md:hidden text-slate-500 w-10 h-10 border border-red-300 rounded-md p-1 hover:bg-red-500 hover:border-0 hover:text-red-100">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+						</svg>
+
 					</div>
-					<div className='flex justify-center items-center uppercase font-semibold'>
-						{day}
-					</div>
+
+					<ul className='my-2 mx-5'>
+						{(task === null || task.length === 0)
+							? <p className='text-center md:text-left text-slate-500 italic text-sm px-4'>No tasks added</p>
+							: task.map(list => (
+								<Item key={list.id} task={list} taskDone={taskDone} className='text-slate-900'>
+									{list.task}
+								</Item>
+							))}
+					</ul>
 				</div>
-
-				<h1 className='md:text-left md:my-5 my-8 text-center mx-8 text-2xl font-bold text-slate-500'>
-					Welcome to TODO List Manager
-				</h1>
-
-				<ul className='my-2 mx-5'>
-					{(task === null || task.length === 0)
-						? <p className='text-center md:text-left text-slate-500 italic text-sm px-4'>No tasks added</p>
-						: task.map(list => (
-							<Item key={list.id} task={list} taskDone={taskDone} className='text-slate-900'>
-								{list.task}
-							</Item>
-						))}
-				</ul>
-			</div>
 
 
 				<div className='flex justify-center items-center sm:gap-x-4 md:gap-x-4 mt-5 px-5 mx-2 md:mx-0 md:px-8'>
@@ -136,7 +151,7 @@ function App() {
 						<input onChange={e => { setNewTask(e.target.value) }} type="text" className="bg-white text-slate-700 ring-1 rounded-md ring-slate-300 px-3 py-2 active:border-none focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500" />
 					</label>
 
-					<button className='ml-1 -mb-5 w-10 h-10 bg-red-500 text-white flex justify-center items-center rounded-full shadow-md ' onClick={() => addTasks(newTask)}>
+					<button className='ml-4 -mb-5 w-10 h-10 bg-red-500 text-white flex justify-center items-center rounded-full shadow-md ' onClick={() => addTasks(newTask)}>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.2" stroke="currentColor" className="w-12 h-12">
 							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
 						</svg>
