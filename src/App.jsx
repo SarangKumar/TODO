@@ -125,7 +125,7 @@ function App() {
 						<h1 className='md:text-left mx-2 md:my-5 my-8 text-center text-2xl font-bold text-slate-500'>
 							Welcome to TODO List Manager
 						</h1>
-						<button onClick={clearAll} className='shadow-sm shadow-red-300 hover:shadow-0 hidden md:block h-fit my-auto px-3 py-[2px] rounded-md border-2  border-red-300 hover:bg-red-500 hover:text-red-100 transition-colors'>Clear</button>
+						<button onClick={clearAll} className=' text-red-400 w-20 hover:shadow-0 hidden md:block h-fit my-auto px-3 py-[2px] rounded-md border-2  border-red-300 hover:bg-red-500 hover:text-red-100 transition-colors'>Clear</button>
 						<svg onClick={clearAll} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="shadow-sm shadow-red-300 hover:shadow-0 md:hidden text-slate-500 w-10 h-10 border border-red-300 rounded-md p-1 hover:bg-red-500 hover:border-1 hover:text-red-100 transition-colors">
 							<path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
 							<path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
@@ -165,13 +165,17 @@ function App() {
 
 const Item = ({ children, task, taskDone }) => {
 	return (
-		<li className={`flex justify-between items-center px-4 py-1 font-medium text-slate-700`}>
-			<span className='w-11/12'>
-				{children}
-			</span>
-			<svg onClick={() => taskDone(task.id)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${task.done === 0 ? 'text-red-300' : 'text-slate-400'}`}>
+		<li className={`flex justify-between items-center px-3 py-1 font-medium text-slate-700`}>
+			<div className='space-x-4 flex items-center'>
+				<input type="checkbox" className='w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600  focus:ring-2 ' />
+				<span className='w-11/12'>
+					{children}
+				</span>
+			</div>
+			{/* <svg onClick={() => taskDone(task.id)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${task.done === 0 ? 'text-red-300' : 'text-slate-400'}`}>
 				<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-			</svg>
+			</svg> */}
+			<button onClick={() => taskDone(task.id)} className='w-20 border border-red-500 px-2 py-px md:px-3 md:py-1 rounded-md font-bold text-red-500 text-sm hover:bg-red-500 hover:text-white transition-colors'>Delete</button>
 		</li>
 	)
 }
