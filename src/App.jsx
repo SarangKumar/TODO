@@ -37,10 +37,7 @@ function App() {
 		// localStorage.setItem('task', JSON.stringify(task));
 
 		const localtasks = JSON.parse(localStorage.getItem('task'));
-		console.log(localtasks);
 		setTask(localtasks)
-
-
 	}, [])
 
 
@@ -58,7 +55,7 @@ function App() {
 			setTask(updatesTasks)
 			localStorage.setItem('task', JSON.stringify(updatesTasks))
 		}
-
+		
 		if (task === null && newtask != '') {
 			const newTask = [{
 				id: 1,
@@ -68,32 +65,44 @@ function App() {
 			setTask(newTask)
 			localStorage.setItem('task', JSON.stringify(newTask))
 		}
-
+		
 		// console.log(newtask);
 		// console.log(task);
 		setNewTask('')
 	}
-
+	
 	const taskDone = (taskId) => {
-
+		
 		// to remove task
-		const updatesTask = task.filter(item => item.id !== taskId)
-		setTask(updatesTask)
+		const updatedTask = task.filter(item => item.id !== taskId)
+		setTask(updatedTask)
 
 		//change the svg color
 		// task.forEach((item) => {
 		// 	if (item.id === taskId) {
-		// 		item.done = 1;
+			// 		item.done = 1;
 		// 	}
 		// });
 
 
 
-		localStorage.setItem('task', JSON.stringify(updatesTask))
-		// console.log(taskId)
+		localStorage.setItem('task', JSON.stringify(updatedTask))
+	}
+	
+	const handleCheckBox = (taskId) => {
+		const updatedTasks = task;
+		updatedTasks.forEach(item => {
+			if (item.id === taskId) {
+				console.log(item.id)
+				item.done = item.done === 1 ? 0 : 1;
+			}
+		})
+		localStorage.setItem('task', JSON.stringify(updatedTasks))
+		setTask(updatedTasks);
+		console.log(updatedTasks)
 	}
 
-
+	
 	const clearAll = () => {
 		const emptyArray = [];
 		localStorage.setItem('task', JSON.stringify([]))
@@ -137,7 +146,7 @@ function App() {
 						{(task === null || task.length === 0)
 							? <p className='text-center md:text-left text-slate-500 italic text-sm px-4'>No tasks added</p>
 							: task.map(list => (
-								<Item key={list.id} task={list} taskDone={taskDone} className='text-slate-900'>
+								<Item key={list.id} task={list} taskDone={taskDone} handleCheckBox={handleCheckBox} className='text-slate-900'>
 									{list.task}
 								</Item>
 							))}
@@ -163,18 +172,15 @@ function App() {
 }
 
 
-const Item = ({ children, task, taskDone }) => {
+const Item = ({ children, task, taskDone, handleCheckBox }) => {
 	return (
 		<li className={`flex justify-between items-center px-3 py-1 font-medium text-slate-700`}>
 			<div className='space-x-4 flex items-center'>
-				<input type="checkbox" className='w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600  focus:ring-2 ' />
+				<input type="checkbox" onClick={() => { handleCheckBox(task.id) }} checked={task.done === 1 ? true : false} className='w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600  focus:ring-2 ' />
 				<span className='w-11/12'>
 					{children}
 				</span>
 			</div>
-			{/* <svg onClick={() => taskDone(task.id)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${task.done === 0 ? 'text-red-300' : 'text-slate-400'}`}>
-				<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-			</svg> */}
 			<button onClick={() => taskDone(task.id)} className='w-20 border border-red-500 px-2 py-px md:px-3 md:py-1 rounded-md font-bold text-red-500 text-sm hover:bg-red-500 hover:text-white transition-colors'>Delete</button>
 		</li>
 	)
